@@ -20,3 +20,6 @@
 3. Run `pip install -r requirements.txt`.
 4. Start Jupyter with `jupyter lab`.
 
+## Notes
+- BLE template code is adapted from [Fast Robots](https://github.com/FastRobotsCornell/FastRobots-2025)
+

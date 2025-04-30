@@ -1,0 +1,22 @@
+2025-04-29 20:12:32,591 | MainThread   | [INFO    ] | <module>            |: test1
+2025-04-29 20:12:36,997 | MainThread   | [CRITICAL] | <module>            |: test1
+2025-04-29 20:13:36,948 | MainThread   | [DEBUG   ] | __init__            |: Python Info: sys.version_info(major=3, minor=12, micro=7, releaselevel='final', serial=0)
+2025-04-29 20:13:36,949 | MainThread   | [DEBUG   ] | __init__            |: System Info: Windows-11-10.0.22631-SP0
+2025-04-29 20:13:36,949 | MainThread   | [INFO    ] | _connect            |: Looking for Artemis Nano Peripheral Device: 3c:8a:1f:5e:8b:f6
+2025-04-29 20:13:42,117 | MainThread   | [INFO    ] | _connect            |: Connected to 3c:8a:1f:5e:8b:f6
+2025-04-29 20:15:33,191 | MainThread   | [INFO    ] | _explore_services   |: Connected to: True
+2025-04-29 20:15:33,203 | MainThread   | [INFO    ] | _explore_services   |: [Service] 00001800-0000-1000-8000-00805f9b34fb (Handle: 1): Generic Access Profile
+2025-04-29 20:15:33,408 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] 00002a00-0000-1000-8000-00805f9b34fb (Handle: 2): Device Name (read), Value: b'Artemis BLE'
+2025-04-29 20:15:33,514 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] 00002a01-0000-1000-8000-00805f9b34fb (Handle: 4): Appearance (read), Value: b'\x00\x00'
+2025-04-29 20:15:33,517 | MainThread   | [INFO    ] | _explore_services   |: [Service] 00001801-0000-1000-8000-00805f9b34fb (Handle: 6): Generic Attribute Profile
+2025-04-29 20:15:33,519 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] 00002a05-0000-1000-8000-00805f9b34fb (Handle: 7): Service Changed (indicate), Value: None
+2025-04-29 20:15:33,634 | MainThread   | [INFO    ] | _explore_services   |: 		[Descriptor] 00002902-0000-1000-8000-00805f9b34fb (Handle: 9): Client Characteristic Configuration) | Value: b'\x02\x00'
+2025-04-29 20:15:33,637 | MainThread   | [INFO    ] | _explore_services   |: [Service] 42a9cc13-e812-48e6-9dca-a4d8bc916dbe (Handle: 10): Unknown
+2025-04-29 20:15:33,756 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] 27616294-3063-4ecc-b60b-3470ddef2938 (Handle: 11): Unknown (read,notify), Value: b'\x00\x00\xe4B'
+2025-04-29 20:15:33,875 | MainThread   | [INFO    ] | _explore_services   |: 		[Descriptor] 00002902-0000-1000-8000-00805f9b34fb (Handle: 13): Client Characteristic Configuration) | Value: b'\x00\x00'
+2025-04-29 20:15:33,995 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] f235a225-6735-4d73-94cb-ee5dfce9ba83 (Handle: 14): Unknown (read,notify), Value: b'[->9.000<-]'
+2025-04-29 20:15:34,114 | MainThread   | [INFO    ] | _explore_services   |: 		[Descriptor] 00002902-0000-1000-8000-00805f9b34fb (Handle: 16): Client Characteristic Configuration) | Value: b'\x00\x00'
+2025-04-29 20:15:34,116 | MainThread   | [INFO    ] | _explore_services   |: 	[Characteristic] 9750f60b-9c9c-4158-b620-002ec9521cd9 (Handle: 17): Unknown (write), Value: None
+2025-04-29 20:17:50,204 | MainThread   | [INFO    ] | disconnect_handler  |: Disconnected from 3C:8A:1F:5E:8B:F6
+2025-04-29 20:17:54,669 | MainThread   | [INFO    ] | _connect            |: Looking for Artemis Nano Peripheral Device: 3c:8a:1f:5e:8b:f6
+2025-04-29 20:17:58,972 | MainThread   | [INFO    ] | _connect            |: Connected to 3c:8a:1f:5e:8b:f6

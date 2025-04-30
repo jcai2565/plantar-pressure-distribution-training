@@ -1,0 +1,10 @@
+# Adapted from Fast Robots -- so not changing variable name from artemis_address
+# ... just know that we use a ESP32.
+artemis_address: '3c:8a:1f:5e:8b:f6' # Currently the rightmost one in case when opened facing you. We should number these or use the same one.
+ble_service: '42a9cc13-e812-48e6-9dca-a4d8bc916dbe' #Newly generated UUID4, matches code on repo.
+
+characteristics:
+  TX_CMD_STRING: '9750f60b-9c9c-4158-b620-02ec9521cd99'
+  RX_FLOAT: '27616294-3063-4ecc-b60b-3470ddef2938'
+  RX_STRING: 'f235a225-6735-4d73-94cb-ee5dfce9ba83'
+
