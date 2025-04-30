@@ -1,2 +1,11 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+.ipynb_checkpoints/
+
+# Ignore all logs but keep folder so that import runs
+ble_python/logs/*
+!ble_python/logs/.gitkeep
+
 venv/
-ble_python/logs/
