@@ -4,7 +4,8 @@
 const float Vcc = 3.3; // volts
 const float Rm = 10000.0; // ohms
 
-const int fsrPins[NUM_SENSORS] = {15, 2, 4, 32, 35, 34};
+// According to the numberings on the diagram in paper
+const int fsrPins[NUM_SENSORS] = {4, 2, 35, 34, 32, 15};
 const int redLEDs[NUM_SENSORS] = {0, 0, 0, 0, 0, 0}; // unused
 const int greenLEDs[NUM_SENSORS] = {0, 0, 0, 0, 0, 0}; // set later!
 float pressureState[NUM_SENSORS] = {0, 0, 0, 0, 0, 0}; // Initialized to 0
