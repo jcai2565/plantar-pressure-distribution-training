@@ -32,11 +32,8 @@ unsigned long currentMillis = 0;
 enum CommandTypes
 {
     PING,
-    SEND_TWO_INTS,
-    SEND_THREE_FLOATS,
-    ECHO,
-    DANCE,
-    SET_VEL,
+    START_STREAM,
+    STOP_STREAM,
 };
 
 void
