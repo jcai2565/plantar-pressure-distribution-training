@@ -3,6 +3,7 @@
 #include "EString.h"
 #include "RobotCommand.h"
 #include <ArduinoBLE.h>
+#include "FSRHandler.hpp"
 
 //////////// BLE UUIDs ////////////
 #define BLE_UUID_TEST_SERVICE "42a9cc13-e812-48e6-9dca-a4d8bc916dbe"
@@ -27,6 +28,7 @@ float tx_float_value = 0.0;
 long interval = 500;
 static long previousMillis = 0;
 unsigned long currentMillis = 0;
+bool streamToInterface = false;
 //////////// Global Variables ////////////
 
 enum CommandTypes
@@ -72,61 +74,16 @@ handle_command()
             Serial.println(tx_estring_value.c_str());
 
             break;
-        /*
-         * Extract two integers from the command string
-         */
-        case SEND_TWO_INTS:
-            int int_a, int_b;
-
-            // Extract the next value from the command string as an integer
-            success = robot_cmd.get_next_value(int_a);
-            if (!success)
-                return;
-
-            // Extract the next value from the command string as an integer
-            success = robot_cmd.get_next_value(int_b);
-            if (!success)
-                return;
-
-            Serial.print("Two Integers: ");
-            Serial.print(int_a);
-            Serial.print(", ");
-            Serial.println(int_b);
-            
-            break;
-        /*
-         * Extract three floats from the command string
-         */
-        case SEND_THREE_FLOATS:
-            /*
-             * Your code goes here.
-             */
-
-            break;
-        /*
-         * Add a prefix and postfix to the string value extracted from the command string
-         */
-        case ECHO:
-
-            char char_arr[MAX_MSG_SIZE];
-
-            // Extract the next value from the command string as a character array
-            success = robot_cmd.get_next_value(char_arr);
-            if (!success)
-                return;
-
-            /*
-             * Your code goes here.
-             */
-            
-            break;
-        /*
-         * DANCE
-         */
-        case DANCE:
-            Serial.println("Look Ma, I'm Dancin'!");
-
-            break;
+        case START_STREAM:
+        {
+          streamToInterface = true;
+          break;
+        }
+        case STOP_STREAM:
+        {
+          streamToInterface = false;
+          break;
+        }
         
         /* 
          * The default case may not capture all types of invalid commands.
@@ -140,54 +97,6 @@ handle_command()
     }
 }
 
-void
-setup()
-{
-    Serial.begin(115200);
-
-    BLE.begin();
-
-    // Set advertised local name and service
-    BLE.setDeviceName("Artemis BLE");
-    BLE.setLocalName("Artemis BLE");
-    BLE.setAdvertisedService(testService);
-
-    // Add BLE characteristics
-    testService.addCharacteristic(tx_characteristic_float);
-    testService.addCharacteristic(tx_characteristic_string);
-    testService.addCharacteristic(rx_characteristic_string);
-
-    // Add BLE service
-    BLE.addService(testService);
-
-    // Initial values for characteristics
-    // Set initial values to prevent errors when reading for the first time on central devices
-    tx_characteristic_float.writeValue(0.0);
-
-    /*
-     * An example using the EString
-     */
-    // Clear the contents of the EString before using it
-    tx_estring_value.clear();
-
-    // Append the string literal "[->"
-    tx_estring_value.append("[->");
-
-    // Append the float value
-    tx_estring_value.append(9.0);
-
-    // Append the string literal "<-]"
-    tx_estring_value.append("<-]");
-
-    // Write the value to the characteristic
-    tx_characteristic_string.writeValue(tx_estring_value.c_str());
-
-    // Output MAC Address
-    Serial.print("Advertising BLE with MAC: ");
-    Serial.println(BLE.address());
-
-    BLE.advertise();
-}
 
 void
 write_data()
@@ -216,11 +125,88 @@ read_data()
     }
 }
 
+// Loops through [pressureState] and sends values
+void sendPressureStates(){
+    tx_estring_value.clear();
+    for (int i = 0; i < NUM_SENSORS; i++){
+      // e.g. "p0:0.235"
+      tx_estring_value.append("p");
+      tx_estring_value.append(i);
+      tx_estring_value.append(":");
+      tx_estring_value.append(pressureState[i]);
+      if (i != NUM_SENSORS - 1){
+        tx_estring_value.append("|");
+      }
+    }
+    // Expected: "p0:{}|p1:{}|...|p5:{}"
+    tx_characteristic_string.writeValue(tx_estring_value.c_str());
+}
+
+// Debug
+void printRawFSRReadings() {
+  Serial.print("Raw FSR Values: ");
+  for (int i = 0; i < 6; i++) {
+    int analogVal = analogRead(fsrPins[i]);
+    Serial.print("f");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(analogVal);
+    if (i < 5) Serial.print(" | ");
+  }
+  Serial.println();
+}
+
+void executeFSR(){
+  // This method reads and updates the [pressureStates] with current values.
+  updatePressureState();
+
+  // This flag is set via bluetooth command.
+  if (streamToInterface){
+    sendPressureStates();
+  }
+  // Cap at 50 Hz
+  delay(20);
+}
+
+void
+setup()
+{
+    Serial.begin(115200);
+    initFSRsAndLEDs();
+
+    BLE.begin();
+
+    // Set advertised local name and service
+    BLE.setDeviceName("Artemis BLE");
+    BLE.setLocalName("Artemis BLE");
+    BLE.setAdvertisedService(testService);
+
+    // Add BLE characteristics
+    testService.addCharacteristic(tx_characteristic_float);
+    testService.addCharacteristic(tx_characteristic_string);
+    testService.addCharacteristic(rx_characteristic_string);
+
+    // Add BLE service
+    BLE.addService(testService);
+
+    // Initial values for characteristics
+    // Set initial values to prevent errors when reading for the first time on central devices
+    tx_characteristic_float.writeValue(0.0);
+
+    // Output MAC Address
+    Serial.print("Advertising BLE with MAC: ");
+    Serial.println(BLE.address());
+
+    BLE.advertise();
+}
+
 void
 loop()
 {
     // Listen for connections
     BLEDevice central = BLE.central();
+    executeFSR();
+    // printRawFSRReadings();
 
     // If a central is connected to the peripheral
     if (central) {
@@ -234,6 +220,9 @@ loop()
 
             // Read data
             read_data();
+
+            executeFSR();
+            // printRawFSRReadings();
         }
 
         Serial.println("Disconnected");
