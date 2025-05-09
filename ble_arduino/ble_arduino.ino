@@ -139,6 +139,8 @@ void sendPressureStates(){
       }
     }
     // Expected: "p0:{}|p1:{}|...|p5:{}"
+    // Serial.print("Sent: ");
+    // Serial.println(tx_estring_value.c_str());
     tx_characteristic_string.writeValue(tx_estring_value.c_str());
 }
 
